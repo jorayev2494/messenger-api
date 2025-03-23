@@ -1,0 +1,116 @@
+#!/bin/bash
+
+source ./colors.sh;
+source ./localFunctions.sh
+
+printCommandsInfo()
+{
+    echo -e "
+ ${CYAN}Server command line interface for the Docker-based web development environment demo.
+
+${YELLOW} Usage:${ENDCOLOR}
+    demo <command> [options] [arguments]
+
+${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
+    status | ps ${BLUE}.......................................................................${GREEN} Print status of containers
+    start | up ${BLUE}........................................................................${GREEN} Start the containers
+    stop | down ${BLUE}.......................................................................${GREEN} Stop the containers
+    restart ${BLUE}...........................................................................${GREEN} Restart the container
+    pull ${BLUE}..............................................................................${GREEN} Pull the containers
+    build [--no-cache] ${BLUE}................................................................${GREEN} Build containers
+                                                                                        Options:
+                                                                                            --no-cache ${BLUE}..................................${GREEN} Build no cache
+
+    env ${BLUE}...............................................................................${GREEN} Copy project env
+    docker-env [local, develop] ${BLUE}.......................................................${GREEN} Copy docker env
+
+    logs ${BLUE}..............................................................................${GREEN} Print logs of containers
+    nginx-restart ${BLUE}.....................................................................${GREEN} Nginx restart
+    bash ${BLUE}..............................................................................${GREEN} Containter interactive terminal bash
+    sh ${BLUE}................................................................................${GREEN} Containter interactive terminal sh
+    cc ${BLUE}................................................................................${GREEN} Clear cache
+    database [admin, client] [[seed], fresh, diff, migrate] ${BLUE}...........................${GREEN} Database
+                                                                                        Options:
+                                                                                            type ${BLUE}........................................${GREEN} Many actions
+    artisan ${BLUE}...........................................................................${GREEN} Laravel Artisan commands
+    composer ${BLUE}..........................................................................${GREEN} Composerz commands
+
+    create-context module-name context-name ${BLUE}...........................................${GREEN} Create a context in module
+    start-production-dependents ${BLUE}.......................................................${GREEN} Start production dependents
+    generate-swagger-docs | gsd ${BLUE}.......................................................${GREEN} Generate Swagger Docs
+    ${ENDCOLOR}
+"
+}
+
+echo -e "${GREEN}Start time: ${BLUE}$(date +"%d-%m-%Y %H-%M-%S")${ENDCOLOR}";
+case "$1" in
+    ps | status)
+        status
+    ;;
+    up | start)
+        start
+    ;;
+    down | stop)
+        stop
+    ;;
+    restart)
+        restart
+    ;;
+    pull)
+        pull
+    ;;
+    build)
+        build "${@:2}"
+    ;;
+
+    env)
+        env
+    ;;
+    docker-env)
+        dockerEnv "${@:2}"
+    ;;
+
+    logs)
+        logs "${@:2}"
+    ;;
+    nginx-restart)
+        nginx-restart
+    ;;
+    bash)
+        bash "${@:2}"
+    ;;
+    sh)
+        sh "${@:2}"
+    ;;
+    migrations)
+        migrations "${@:2}"
+    ;;
+    cc)
+        cc
+    ;;
+    database)
+        database "${@:2}"
+    ;;
+    artisan)
+        artisan "${@:2}"
+    ;;
+    composer)
+        composer "${@:2}"
+    ;;
+    create-context)
+        create-context "${@:2}"
+    ;;
+    start-production-dependents)
+        start-production-dependents
+    ;;
+    gsd | generate-swagger-docs)
+        generateSwaggerDocs
+    ;;
+    *)
+        printCommandsInfo
+
+#        echo -e "${BLUE}$(date +"%d-%m-%Y %H-%M-%S")${ENDCOLOR}";
+#        exit 1
+    ;;
+esac
+echo -e "${GREEN}End time: ${BLUE}$(date +"%d-%m-%Y %H-%M-%S")${ENDCOLOR}";

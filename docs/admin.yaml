@@ -1,0 +1,1050 @@
+openapi: 3.1.0
+info:
+  title: 'Mobile documentation for Delivery'
+  description: Delivery
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8088/api/admin'
+    description: 'Local server 8088'
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      operationId: 9aa26a753608ec94e84cf8e70ccc4776
+      parameters:
+        -
+          name: X-Device-Id
+          in: header
+          required: true
+          example: EgZjaHJvbWUyBggAEEUY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: admin@gmail.com
+                password:
+                  type: string
+                  example: 12345Secret!
+              type: object
+      responses:
+        '200':
+          description: 'Success response'
+  /auth/refresh-token:
+    post:
+      tags:
+        - Authentication
+      summary: 'Refresh token'
+      operationId: cac5c17d874ffc2f7064375f09e0401a
+      parameters:
+        -
+          name: X-Device-Id
+          in: header
+          required: true
+          example: EgZjaHJvbWUyBggAEEUY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - refresh-token
+              properties:
+                refresh-token:
+                  type: string
+                  example: 6b79869159988ca96646a31ae5435d60
+              type: object
+      responses:
+        '200':
+          description: 'Success response'
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout
+      operationId: 9bb24561e81a9f1e12200767dde70e34
+      parameters:
+        -
+          name: X-Device-Id
+          in: header
+          required: true
+          example: EgZjaHJvbWUyBggAEEUY
+      responses:
+        '204':
+          description: 'Success response'
+      security:
+        -
+          authBearerToken: []
+  /auth/restore-password:
+    post:
+      tags:
+        - Authentication
+      summary: 'Restore password'
+      operationId: 1956b25d2afae93e4ceda7cb773fe816
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - code
+              properties:
+                code:
+                  type: integer
+                  example: 563894
+                password:
+                  type: string
+                  example: 12345NewSecret!
+                password_confirmation:
+                  type: string
+                  example: 12345NewSecret!
+              type: object
+      responses:
+        '202':
+          description: 'Success response'
+  /clients:
+    get:
+      tags:
+        - Clients
+      summary: 'Client paginate'
+      operationId: 5f5cee5ade4a0a017fbb96020c502d15
+      parameters:
+        -
+          name: page
+          in: query
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: 1
+          spaceDelimited: []
+          pipeDelimited: []
+        -
+          name: per_page
+          in: query
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: 15
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '200':
+          description: 'Created response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  current_page: { type: integer, example: 1 }
+                  data: { type: array, items: { $ref: '#/components/schemas/Admin:Client:IndexResponseSchema' } }
+                  next_page: { type: [integer, 'null'], example: 2 }
+                  next_page_url: { type: [string, 'null'], example: 'http://127.0.0.1:8088/api/admin/roles?page=2&per_page=15' }
+                  last_page: { type: [integer, 'null'], example: 3 }
+                  last_page_url: { type: [string, 'null'], example: 'http://127.0.0.1:8088/api/admin/roles?page=3&per_page=15' }
+                  per_page: { type: [integer, 'null'], example: 15 }
+                  to: { type: [integer, 'null'], example: 15 }
+                  total: { type: [integer, 'null'], example: 45 }
+                type: object
+      security:
+        -
+          authBearerToken: []
+    post:
+      tags:
+        - Clients
+      summary: 'Create a client'
+      operationId: 3b257821de6e637989707e1edfdefec9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Client:CreateRequestBodySchema'
+      responses:
+        '204':
+          description: 'Client Created Response'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+  '/clients/{uuid}':
+    get:
+      tags:
+        - Clients
+      summary: 'Show a client'
+      operationId: 50c277051501813cbc12fd4d0f242ee5
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+      responses:
+        '202':
+          description: 'Client show response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin:Client:ShowRequestBodySchema'
+      security:
+        -
+          authBearerToken: []
+    put:
+      tags:
+        - Clients
+      summary: 'Update a client'
+      operationId: 5a96019f9a9eb25f15171c67da93c210
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Client:UpdateRequestBodySchema'
+      responses:
+        '202':
+          description: 'Client updated'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+    delete:
+      tags:
+        - Clients
+      summary: 'Update a client'
+      operationId: e69ae28c2de4738e8c53f268eea91848
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+      responses:
+        '204':
+          description: 'Client deleted response'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+  /codes:
+    post:
+      tags:
+        - Code
+      summary: 'Generate code'
+      operationId: 6331c1f09bc3af26730aca4c1aab0e20
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: admin@gmail.com
+                type:
+                  $ref: '#/components/schemas/Admin:Code:Type'
+              type: object
+      responses:
+        '202':
+          description: 'Response description'
+          content:
+            application/json: {  }
+  /managers:
+    get:
+      tags:
+        - Managers
+      summary: 'Manager paginate'
+      operationId: 172585b2453b25c3aff1258a320b62e7
+      parameters:
+        -
+          name: page
+          in: query
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: 1
+          spaceDelimited: []
+          pipeDelimited: []
+        -
+          name: per_page
+          in: query
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: 15
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '200':
+          description: 'Created response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  current_page: { type: integer, example: 1 }
+                  data: { type: array, items: { $ref: '#/components/schemas/Admin:Manager:IndexResponseSchema' } }
+                  next_page: { type: [integer, 'null'], example: 2 }
+                  next_page_url: { type: [string, 'null'], example: 'http://127.0.0.1:8088/api/admin/roles?page=2&per_page=15' }
+                  last_page: { type: [integer, 'null'], example: 3 }
+                  last_page_url: { type: [string, 'null'], example: 'http://127.0.0.1:8088/api/admin/roles?page=3&per_page=15' }
+                  per_page: { type: [integer, 'null'], example: 15 }
+                  to: { type: [integer, 'null'], example: 15 }
+                  total: { type: [integer, 'null'], example: 45 }
+                type: object
+      security:
+        -
+          authBearerToken: []
+    post:
+      tags:
+        - Managers
+      summary: 'Create a manager'
+      operationId: 021dc17f0dcb7102a736dbb14d632aad
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Manager:CreateRequestBodySchema'
+      responses:
+        '202':
+          description: 'Manager created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  uuid: { type: string, uniqueItems: true, example: aabe3af0-4348-4492-bbae-ac4e40c83ef8 }
+                type: object
+      security:
+        -
+          authBearerToken: []
+  '/managers/{uuid}':
+    get:
+      tags:
+        - Managers
+      summary: 'Show a manager'
+      operationId: c47aa0aff25be9897ab8960706d8d2d1
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '202':
+          description: 'Manager created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin:Manager:ShowRequestBodySchema'
+      security:
+        -
+          authBearerToken: []
+    put:
+      tags:
+        - Managers
+      summary: 'Update a manager'
+      operationId: 5e2fbe3325ea44263a331372f850c00a
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Manager:UpdateRequestBodySchema'
+      responses:
+        '202':
+          description: 'Manager created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  uuid: { type: string, example: aabe3af0-4348-4492-bbae-ac4e40c83ef8 }
+                type: object
+      security:
+        -
+          authBearerToken: []
+    delete:
+      tags:
+        - Managers
+      summary: 'Update a manager'
+      operationId: 44b214b35fa854d96aab7b4487ca910f
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '204':
+          description: 'Manager deleted'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: 'Get profile'
+      operationId: e50a3a01348381a6d1c9b0fb66b383b1
+      responses:
+        '200':
+          description: 'Profile Response'
+      security:
+        -
+          authBearerToken: []
+    put:
+      tags:
+        - Profile
+      summary: 'Update profile'
+      operationId: a9b5ec5f19dcd4616a8c913333dca0be
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Profile:UpdateRequestBodySchema'
+      responses:
+        '202':
+          description: 'Profile update response'
+      security:
+        -
+          authBearerToken: []
+  '/roles/{uuid}/members/{member_uuid}':
+    put:
+      tags:
+        - Roles
+      summary: 'Role set to member '
+      operationId: 10ec0491bd2b0fb9871d2f8eea6dca1b
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+        -
+          name: member_uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '202':
+          description: 'Role set to member response'
+      security:
+        -
+          authBearerToken: []
+  '/roles/members/{member_uuid}':
+    get:
+      tags:
+        - Roles
+      summary: 'Get role'
+      operationId: c61382319dd9deb960817cdbbf6e16eb
+      parameters:
+        -
+          name: member_uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '200':
+          description: 'Get role response'
+      security:
+        -
+          authBearerToken: []
+  /roles/permissions:
+    get:
+      tags:
+        - Permissions
+      summary: 'Load permissions'
+      operationId: 1a441fdb1c68f556c7baf9dbce96888b
+      responses:
+        '200':
+          description: 'Permission list response'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin:Role:Permission:CreateResponseScheme'
+      security:
+        -
+          authBearerToken: []
+    post:
+      tags:
+        - Permissions
+      summary: 'Create permission'
+      operationId: 4d1405dffde44fe7f451f4bc6185a317
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Role:Permission:CreateRequestBodyScheme'
+      responses:
+        '204':
+          description: 'Deleted response'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+  /roles:
+    get:
+      tags:
+        - Roles
+      summary: 'Role paginate'
+      operationId: 430d8b4d124653979895ec1ba5e7af90
+      parameters:
+        -
+          name: page
+          in: query
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: 1
+          spaceDelimited: []
+          pipeDelimited: []
+        -
+          name: per_page
+          in: query
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: 15
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '200':
+          description: 'Created response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  current_page: { type: integer, example: 1 }
+                  data: { type: array, items: { $ref: '#/components/schemas/Admin:Role:IndexResponseScheme' } }
+                  next_page: { type: [integer, 'null'], example: 2 }
+                  next_page_url: { type: [string, 'null'], example: 'http://127.0.0.1:8088/api/admin/roles?page=2&per_page=15' }
+                  last_page: { type: [integer, 'null'], example: 3 }
+                  last_page_url: { type: [string, 'null'], example: 'http://127.0.0.1:8088/api/admin/roles?page=3&per_page=15' }
+                  per_page: { type: [integer, 'null'], example: 15 }
+                  to: { type: [integer, 'null'], example: 15 }
+                  total: { type: [integer, 'null'], example: 45 }
+                type: object
+      security:
+        -
+          authBearerToken: []
+    post:
+      tags:
+        - Roles
+      summary: 'Create role'
+      operationId: 32b9cfcf26e030f25f4ba6e53e02dfa8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Role:CreateRequestBodySchema'
+      responses:
+        '204':
+          description: 'Role Created Response'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+  '/roles/{uuid}':
+    get:
+      tags:
+        - Roles
+      summary: 'Show role'
+      operationId: 6c4e33d9c49a9e28f98a6bc60dfe4497
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '200':
+          description: 'Show role response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin:Role:ShowResponseSchema'
+      security:
+        -
+          authBearerToken: []
+    put:
+      tags:
+        - Roles
+      summary: 'Update role'
+      operationId: e1411e9886e03f7803742e5355156aa4
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Role:UpdateRequestBodySchema'
+      responses:
+        '202':
+          description: 'Role updated response'
+      security:
+        -
+          authBearerToken: []
+    delete:
+      tags:
+        - Roles
+      summary: 'Delete role'
+      operationId: 9d42746728ef45bb04fbc1c1380dd817
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      responses:
+        '204':
+          description: 'Role deleted response'
+      security:
+        -
+          authBearerToken: []
+  '/roles/{uuid}/permissions':
+    post:
+      tags:
+        - Roles
+      summary: 'Role set permissions'
+      operationId: aa6cd08852bb8f4c4a312e1fd5da8ead
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          explode: false
+          allowReserved: false
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+          spaceDelimited: []
+          pipeDelimited: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin:Role:ChangePermissionRequestBodySchema'
+      responses:
+        '204':
+          description: 'Role Created Response'
+          content:
+            application/json: {  }
+      security:
+        -
+          authBearerToken: []
+components:
+  schemas:
+    'Admin:Client:CreateRequestBodySchema':
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          uniqueItems: true
+          example: client@gmail.com
+        first_name:
+          type: string
+          example: Client
+        last_name:
+          type: string
+          example: Clientov
+      type: object
+    'Admin:Client:UpdateRequestBodySchema':
+      required:
+        - email
+        - first_name
+        - last_name
+      properties:
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type: string
+          example: Client
+        last_name:
+          type: string
+          example: Clientov
+      type: object
+    'Admin:Client:IndexResponseSchema':
+      properties:
+        uuid:
+          type: string
+          uniqueItems: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type:
+            - string
+            - 'null'
+          example: Client
+        last_name:
+          type:
+            - string
+            - 'null'
+          example: Clientov
+      type: object
+    'Admin:Client:ShowRequestBodySchema':
+      properties:
+        uuid:
+          type: string
+          uniqueItems: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type: string
+          example: Client
+        last_name:
+          type: string
+          example: Clientov
+      type: object
+    'Admin:Code:Type':
+      type: string
+      enum:
+        - restore_password
+    'Admin:Manager:CreateRequestBodySchema':
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type: string
+          example: Manager
+        last_name:
+          type: string
+          example: Managerov
+      type: object
+    'Admin:Manager:UpdateRequestBodySchema':
+      required:
+        - email
+        - first_name
+        - last_name
+      properties:
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type: string
+          example: Manager
+        last_name:
+          type: string
+          example: Managerov
+      type: object
+    'Admin:Manager:IndexResponseSchema':
+      properties:
+        uuid:
+          type: string
+          uniqueItems: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type:
+            - string
+            - 'null'
+          example: Manager
+        last_name:
+          type:
+            - string
+            - 'null'
+          example: Managerov
+      type: object
+    'Admin:Manager:ShowRequestBodySchema':
+      properties:
+        uuid:
+          type: string
+          uniqueItems: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+        email:
+          type: string
+          uniqueItems: true
+          example: manager@gmail.com
+        first_name:
+          type: string
+          example: Manager
+        last_name:
+          type: string
+          example: Managerov
+      type: object
+    'Admin:Profile:UpdateRequestBodySchema':
+      required:
+        - email
+        - first_name
+        - last_name
+      properties:
+        email:
+          type: string
+          uniqueItems: true
+          example: profile@gmail.com
+        first_name:
+          type: string
+          example: Manager
+        last_name:
+          type: string
+          example: Managerov
+      type: object
+    'Admin:Role:Permission:CreateRequestBodyScheme':
+      required:
+        - label
+        - resource
+        - action
+      properties:
+        label:
+          type: string
+          example: 'Manager create'
+        resource:
+          type: string
+          example: manager
+        action:
+          type: string
+          example: create
+      type: object
+    'Admin:Role:Permission:CreateResponseScheme':
+      properties:
+        id:
+          type: integer
+          example: 5
+        label:
+          type: string
+          example: 'Manager create'
+        resource:
+          type: string
+          example: manager
+        action:
+          type: string
+          example: create
+      type: object
+    'Admin:Role:ChangePermissionRequestBodySchema':
+      required:
+        - permission_ids
+      properties:
+        permission_ids:
+          type: array
+          items:
+            type: integer
+            example: 1
+      type: object
+    'Admin:Role:CreateRequestBodySchema':
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          example: Admin
+        description:
+          type:
+            - string
+            - 'null'
+          example: 'Admin description'
+        is_super_admin:
+          type: boolean
+          default: false
+          enum:
+            - true
+            - false
+          example: true
+      type: object
+    'Admin:Role:UpdateRequestBodySchema':
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          example: Admin
+        description:
+          type:
+            - string
+            - 'null'
+          example: 'Admin description'
+        is_super_admin:
+          type: boolean
+          default: false
+          enum:
+            - true
+            - false
+          example: true
+      type: object
+    'Admin:Role:IndexResponseScheme':
+      properties:
+        uuid:
+          type: string
+          uniqueItems: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+        value:
+          type: string
+          example: Admin
+        description:
+          type:
+            - string
+            - 'null'
+          example: 'Admin description'
+        is_super_admin:
+          type: boolean
+          enum:
+            - true
+            - false
+          example: true
+      type: object
+    'Admin:Role:ShowRolePermissionResponseSchema':
+      properties:
+        id:
+          type: integer
+          uniqueItems: true
+          example: 6
+        label:
+          type: string
+          example: Admin
+        resource:
+          type:
+            - string
+            - 'null'
+          example: 'Admin resource'
+        action:
+          type:
+            - string
+            - 'null'
+          example: 'Admin action'
+      type: object
+    'Admin:Role:ShowResponseSchema':
+      properties:
+        uuid:
+          type: string
+          uniqueItems: true
+          example: aabe3af0-4348-4492-bbae-ac4e40c83ef8
+        value:
+          type: string
+          example: Admin
+        description:
+          type:
+            - string
+            - 'null'
+          example: 'Admin description'
+        is_super_admin:
+          type: boolean
+          enum:
+            - true
+            - false
+          example: true
+      type: object
+  securitySchemes:
+    authBearerToken:
+      type: http
+      name: Authorization
+      in: header
+      scheme: bearer
+tags:
+  -
+    name: Authentication
+    description: Authentication
+  -
+    name: Code
+    description: Code
+  -
+    name: Profile
+    description: Profile
+  -
+    name: Managers
+    description: Managers
+  -
+    name: Clients
+    description: Clients
+  -
+    name: Roles
+    description: Roles
+  -
+    name: Permissions
+    description: Permissions

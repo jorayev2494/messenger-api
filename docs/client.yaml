@@ -1,0 +1,166 @@
+openapi: 3.1.0
+info:
+  title: 'Mobile documentation for Delivery'
+  description: Delivery
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8088/api/client'
+    description: 'Local server 8088'
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      operationId: 4e6e6230f18da0bf9d90260f1456c07f
+      parameters:
+        -
+          name: X-Device-Id
+          in: header
+          required: true
+          example: EgZjaHJvbWUyBggAEEUY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: client@gmail.com
+                password:
+                  type: string
+                  example: 12345Secret!
+              type: object
+      responses:
+        '200':
+          description: 'Success response'
+  /auth/refresh-token:
+    post:
+      tags:
+        - Authentication
+      summary: 'Refresh token'
+      operationId: cd7492fffb9e5f19499726c07da4e47c
+      parameters:
+        -
+          name: X-Device-Id
+          in: header
+          required: true
+          example: EgZjaHJvbWUyBggAEEUY
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - refresh-token
+              properties:
+                refresh-token:
+                  type: string
+                  example: 6b79869159988ca96646a31ae5435d60
+              type: object
+      responses:
+        '200':
+          description: 'Success response'
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: 'Refresh token'
+      operationId: e0213fb249a7f1c13517244201625c62
+      parameters:
+        -
+          name: X-Device-Id
+          in: header
+          required: true
+          example: EgZjaHJvbWUyBggAEEUY
+      responses:
+        '204':
+          description: 'Success response'
+      security:
+        -
+          authBearerToken: []
+  /auth/restore-password:
+    post:
+      tags:
+        - Authentication
+      summary: 'Restore password'
+      operationId: b5ca61ed73f0889d63fb051aba47a65f
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - code
+              properties:
+                code:
+                  type: integer
+                  example: 563894
+                password:
+                  type: string
+                  example: 12345NewSecret!
+                password_confirmation:
+                  type: string
+                  example: 12345NewSecret!
+              type: object
+      responses:
+        '202':
+          description: 'Success response'
+  /codes:
+    post:
+      tags:
+        - Code
+      summary: 'Generate code'
+      operationId: 222edd076cf6d0a45b17781b7d5644bb
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: client@gmail.com
+                type:
+                  $ref: '#/components/schemas/Client:Code:Type'
+              type: object
+      responses:
+        '202':
+          description: 'Response description'
+          content:
+            application/json: {  }
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: 'Get profile'
+      operationId: 8f32e2c0ffff1cb1f3d308ba3f485517
+      responses:
+        '200':
+          description: 'Profile Response'
+      security:
+        -
+          authBearerToken: []
+components:
+  schemas:
+    'Client:Code:Type':
+      type: string
+      enum:
+        - restore_password
+  securitySchemes:
+    authBearerToken:
+      type: http
+      name: Authorization
+      in: header
+      scheme: bearer
+tags:
+  -
+    name: Authentication
+    description: Authentication
+  -
+    name: Code
+    description: Code
+  -
+    name: Profile
+    description: Profile
