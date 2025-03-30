@@ -32,37 +32,31 @@ class RoleAndPermissionSeeder extends Seeder
         [
             'resource' => 'manager',
             'actions' => [
-                [
-                    'index',
-                    'create',
-                    'show',
-                    'update',
-                    'delete',
-                ],
+                'index',
+                'create',
+                'show',
+                'update',
+                'delete',
             ],
         ],
         [
             'resource' => 'client',
             'actions' => [
-                [
-                    'index',
-                    'create',
-                    'show',
-                    'update',
-                    'delete',
-                ],
+                'index',
+                'create',
+                'show',
+                'update',
+                'delete',
             ],
         ],
         [
             'resource' => 'role',
             'actions' => [
-                [
-                    'index',
-                    'create',
-                    'show',
-                    'update',
-                    'delete',
-                ],
+                'index',
+                'create',
+                'show',
+                'update',
+                'delete',
             ],
         ],
     ];
@@ -100,7 +94,7 @@ class RoleAndPermissionSeeder extends Seeder
             foreach ($actions as $action) {
                 $this->commandBus->dispatch(
                     new PermissionCreateCommand(
-                        sprintf('%s %s', ucfirst($resource), $permission),
+                        sprintf('%s %s', ucfirst($resource), $action),
                         $resource,
                         $action
                     )

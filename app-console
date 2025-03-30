@@ -54,7 +54,7 @@ case "$1" in
         stop
     ;;
     restart)
-        restart
+        restart "${@:2}"
     ;;
     pull)
         pull

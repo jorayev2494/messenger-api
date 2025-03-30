@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "centrifugal/phpcent": "^6.0",
         "doctrine/dbal": "^4.2",
         "doctrine/migrations": "^3.8",
         "doctrine/orm": "3.0.x-dev",

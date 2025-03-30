@@ -22,8 +22,8 @@ readonly class Response implements HttpResponseInterface
     {
         return [
             'email' => $this->profile->email->value,
-            'first_name' => $this->profile->lastName->value,
-            'last_name' => $this->profile->firstName->value,
+            'first_name' => $this->profile->firstName->value,
+            'last_name' => $this->profile->lastName->value,
         ];
     }
 }

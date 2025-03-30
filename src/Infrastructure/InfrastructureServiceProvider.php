@@ -19,6 +19,8 @@ use Project\Infrastructure\Services\Authentication\AuthenticationService;
 use Project\Infrastructure\Services\Authentication\Contracts\AuthenticationServiceInterface;
 use Project\Infrastructure\Services\Authentication\Services\Contracts\DeviceServiceInterface;
 use Project\Infrastructure\Services\Authentication\Services\DeviceService;
+use Project\Infrastructure\Services\WS\Contracts\WSServiceInterface;
+use Project\Infrastructure\Services\WS\WSService;
 
 class InfrastructureServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,16 @@ class InfrastructureServiceProvider extends ServiceProvider
         // $this->app->singleton(AuthManagerInterface::class, AuthManager::class);
         $this->app->singleton(AuthenticationServiceInterface::class, AuthenticationService::class);
         $this->app->singleton(DeviceServiceInterface::class, DeviceService::class);
+        $this->app->singleton(
+            WSServiceInterface::class,
+            static fn (): WSServiceInterface => new WSService(
+                new \phpcent\Client(
+                    config('ws.centrifuge.url'),
+                    config('ws.centrifuge.api_key'),
+                    config('ws.centrifuge.secret_key')
+                )
+            )
+        );
 
         $this->app->singleton(UuidGeneratorInterface::class, UuidGenerator::class);
         $this->app->singleton(TokenGeneratorInterface::class, TokenGenerator::class);

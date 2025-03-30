@@ -1,0 +1,33 @@
+{
+  "log_level": "debug",
+  "admin": {
+    "password": "password",
+    "secret": "secret",
+    "enabled": true
+  },
+  "http_api": {
+    "key": "my_api_key"
+  },
+  "client": {
+    "token": {
+      "hmac_secret_key": "my_secret"
+    },
+    "allowed_origins": ["*"]
+  },
+  "channel": {
+    "without_namespace": {
+      "allow_subscribe_for_client": true,
+      "presence": true,
+      "history_size": 10,
+      "history_ttl": "60s"
+    },
+    "namespaces": [
+      {
+        "name": "chat",
+        "allow_subscribe_for_client": true,
+        "history_size": 300,
+        "history_ttl": "600s"
+      }
+    ]
+  }
+}
