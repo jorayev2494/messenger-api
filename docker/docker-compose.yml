@@ -64,17 +64,18 @@ services:
         networks:
             - delivery-backend
 
-#    # Queue worker: default
-#    default-worker:
-#        <<: *php-cli
-#        container_name: ${COMPOSE_PROJECT_NAME?Not project name}-default-worker
-#        restart: unless-stopped
-#        depends_on:
-#            -   mysql
-#        command:
-#            ['./artisan', 'queue:work', '--name=default', '--timeout=3', '--tries=3']
-#        networks:
-#            - delivery-backend
+    # Queue worker: default
+    default-worker:
+        <<: *php-cli
+        container_name: ${COMPOSE_PROJECT_NAME?Not project name}-default-worker
+        restart: unless-stopped
+        depends_on:
+            - php-fpm
+            - mysql
+        command:
+            ['./artisan', 'queue:work', '--name=default,email', '--timeout=3', '--tries=3']
+        networks:
+            - delivery-backend
 
     # Mailhog Service
     mailhog:
@@ -129,6 +130,21 @@ services:
 #            - ${MINIO_WEB_INTERFACE_PORT}:9001
 #        networks:
 #            - delivery-backend
+
+    centrifugo:
+        container_name: ${COMPOSE_PROJECT_NAME?Not project name}-centrifugo
+        image: centrifugo/centrifugo:v6
+        volumes:
+            - ./centrifugo/configs/config.json:/centrifugo/config.json
+        command: centrifugo -c config.json
+        ports:
+            - 8000:8000
+        ulimits:
+            nofile:
+                soft: 65535
+                hard: 65535
+        networks:
+            - delivery-backend
 
 networks:
     delivery-backend:

@@ -79,8 +79,7 @@ function stop()
 
 function restart()
 {
-    stop
-    start
+    docker compose restart "${@:1}"
 }
 
 function pull()

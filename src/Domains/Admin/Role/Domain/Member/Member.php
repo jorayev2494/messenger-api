@@ -29,7 +29,6 @@ class Member
     // #[ORM\Column(name: 'role_uuid', type: RoleUuidType::NAME, nullable: true, unique: false)]
     // private RoleUuid $roleUuid;
 
-    // , fetch: 'LAZY', inversedBy: 'members'
     #[ORM\ManyToOne(targetEntity: Role::class, fetch: 'LAZY', inversedBy: 'members')]
     #[ORM\JoinColumn(name: 'role_uuid', referencedColumnName: 'uuid', onDelete: 'SET NULL')]
     private ?Role $role;

@@ -10,7 +10,10 @@ class RoleServiceProvider extends DomainServiceProvider
     protected const SERVICES = [
         \Project\Domains\Admin\Role\Domain\Role\RoleRepositoryInterface::class => [self::SERVICE_BIND, \Project\Domains\Admin\Role\Infrastructure\Role\Repositories\Doctrine\RoleRepository::class],
         \Project\Domains\Admin\Role\Domain\Permission\PermissionRepositoryInterface::class => [self::SERVICE_SINGLETON, \Project\Domains\Admin\Role\Infrastructure\Permission\Repositories\Doctrine\PermissionRepository::class],
-        \Project\Domains\Admin\Role\Domain\Member\MemberRepositoryInterface::class => [self::SERVICE_SINGLETON, \Project\Domains\Admin\Role\Infrastructure\Member\Repositories\Doctrine\MemberRepository::class]
+        \Project\Domains\Admin\Role\Domain\Member\MemberRepositoryInterface::class => [self::SERVICE_SINGLETON, \Project\Domains\Admin\Role\Infrastructure\Member\Repositories\Doctrine\MemberRepository::class],
+
+        // APIs
+        \Project\Domains\Admin\Authentication\Infrastructure\Adapters\Role\Contracts\RoleApiInterface::class => [self::SERVICE_SINGLETON, \Project\Domains\Admin\Role\Infrastructure\APIs\Authentication\RoleApi::class]
     ];
 
     /** @var array<array-key, string> */

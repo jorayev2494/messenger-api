@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Project\Domains\Admin\Manager\Infrastructure\APIs\Profile;
+namespace Project\Domains\Admin\Client\Infrastructure\APIs\Profile;
 
 use Project\Domains\Admin\Manager\Application\Manager\Commands\Update\Command;
 use Project\Domains\Admin\Manager\Domain\Manager\ManagerRepositoryInterface;
